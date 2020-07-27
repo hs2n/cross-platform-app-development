@@ -1,0 +1,14 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "testingapp",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+	"windowsAndroidStudioPath": "C:\\Users\\lukas\\AppData\\Local\\JetBrains\\Toolbox\\apps\\AndroidStudio\\ch-0\\193.6626763\\bin\\studio64.exe",
+  "cordova": {}
+}
