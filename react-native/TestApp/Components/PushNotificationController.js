@@ -7,7 +7,7 @@ PushNotification.configure({
   },
   popInitialNotification: true,
   //This prevents an Firebase not initialized error
-  requestPermissions: false
+  requestPermissions: true
 });
 
 //For some odd reason you have to differentiate between instantNotification and scheduledNotification even though you have to set a date prop in PushNotification.localNotificationSchedule()

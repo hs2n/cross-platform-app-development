@@ -1,29 +1,28 @@
 This App is part of the 3-Part Evaluation process and was made with the react-native framework
 
---ONLY FOLLOW THIS IF YOU WANT TO EXECUTE THE APP ON YOUR IOS DEVICE--
+Execute the following 2 commands before trying to start the app:
+	npm install
+	yarn install
+and you should be good to go on andorid
 
-You might have trouble setting up the app for iOS, so you will probably have to reinitialize the project with following commands:
+for iOS follow these extra steps:
 
-//installs node.js python2 and jdk8 - NOT NECESSARY if you already have this installed
-choco install -y nodejs.install python2 jdk8
+#THIS PART IS REQUIRED FOR USAGE ON IOS DEVICES - IGNORE IF YOU WANT TO DEPLOY THE APP ON ANDROID
+Pretty much all steps have been done for you, but when using iOS you still have to follow these steps:
+first run following command:
 
-//Installs the react-native cli needed for setup
-npm install -g react-native-cli
+	run npx pod-install
 
-react-native init testapp
-cd testapp
-npm start # you can also use: expo start
+Go into your TestApp/ios dir and open QRReaderExample.xcworkspace workspace. Select the top project "QRReaderExample" and select the "Signing & Capabilities" tab. 
+Add a 2 new Capabilities using "+" button:
 
-//to execute the app 
-react-native run-ios
+	Background Mode capability and tick Remote Notifications.
+	Push Notifications capability
 
-//For further information visit: https://reactnative.dev/docs/0.59/getting-started
+I would recommend running 'pod install' inside the ios folder after youre done to ensure all packages are linked and installed
 
-After initializing the app you should be able to copy-paste the Components folder and the App.js file to your new project
-It will most likely not execute because the config files are not setup yet
+after that you can execute following command:
 
-If you really want you can setup the components too so camera as well as push notifications work
-If so, follow these tutorials: 
+	npx react-native run-ios
 
-https://react-native-community.github.io/react-native-camera/docs/installation
-https://github.com/zo0r/react-native-push-notification#installation
+to run the app on your ios device

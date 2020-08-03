@@ -30,8 +30,8 @@
                     android:value="YOUR NOTIFICATION CHANNEL DESCRIPTION"/>
 
         <!-- Change the value to true to enable pop-up for in foreground (remote-only, for local use ignoreInForeground) -->
-        <meta-data  android:name="com.dieam.reactnativepushnotification.ignoreInForeground"
-                    android:value="true"/>
+        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
+                    android:value="false"/>
         <!-- Change the value to false if you don't want the creation of the default channel -->
         <meta-data  android:name="com.dieam.reactnativepushnotification.channel_create_default"
                     android:value="true"/>
@@ -63,6 +63,15 @@
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data
+              android:host="scarcheek.eu.auth0.com"
+              android:pathPrefix="/android/${applicationId}/callback"
+              android:scheme="${applicationId}" />
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
