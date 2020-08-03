@@ -4,4 +4,5 @@
     <string name="title_activity_main">testingapp</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
+	<string name="server_client_id">1080452260544-bv04ja7aorts9ci7spsf0fmrreeivk4i.apps.googleusercontent.com</string>
 </resources>

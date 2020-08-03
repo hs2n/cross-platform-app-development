@@ -9,7 +9,8 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-
+    implementation project(':codetrix-studio-capacitor-google-auth')
+    implementation project(':capacitor-secure-storage-plugin')
     implementation "com.android.support:support-v4:27.+"
 }
 apply from: "../../node_modules/phonegap-plugin-barcodescanner/src/android/barcodescanner.gradle"

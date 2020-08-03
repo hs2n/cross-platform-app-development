@@ -1,6 +1,9 @@
+import "@codetrix-studio/capacitor-google-auth";
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Plugins } from '@capacitor/core';
-const { Device } = Plugins;
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -8,16 +11,34 @@ const { Device } = Plugins;
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-	data: any;
-  constructor() {
-	  Device.getInfo().then(info => this.data = Object.keys(info).map(key => this.createDataObject(key, info[key])));
-  }
+	public loginForm: FormGroup;
+	public data: any;
 
-  createDataObject(name1, info1){
-	  return {
-		  name : name1,
-		  info : info1
-	  }
-  }
+	constructor(public formBuilder: FormBuilder, public toastController: ToastController) {
+		this.loginForm = formBuilder.group({
+			username: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
+			password: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])]
+		});
+	}
 
+	save() {
+		this.data = JSON.stringify(this.loginForm.value);
+	}
+
+
+	logInGoogle() {
+		Plugins.GoogleAuth.signIn().then((result => this.presentToast('SUCCESS! Message: ' + JSON.stringify(result)))).catch(err => 'SUCCESS! Error: ' + JSON.stringify(err));
+	}
+
+	logOutGoogle(){
+		Plugins.GoogleAuth.signOut().then((result => this.presentToast('SUCCESS! Message: ' + JSON.stringify(result)))).catch(err => 'SUCCESS! Error: ' + JSON.stringify(err));
+	}
+
+	async presentToast(message1: string) {
+		const toast = await this.toastController.create({
+			message: message1,
+			duration: 2000
+		});
+		toast.present();
+	}
 }

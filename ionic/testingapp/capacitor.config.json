@@ -1,14 +1,18 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "testingapp",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
+	"appId": "io.ionic.starter",
+	"appName": "testingapp",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "www",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		},
+		"GoogleAuth": {
+			"scopes": ["profile", "email"],
+			"serverClientId": "1080452260544-bv04ja7aorts9ci7spsf0fmrreeivk4i.apps.googleusercontent.com"
+		}
+	},
 	"windowsAndroidStudioPath": "C:\\Users\\lukas\\AppData\\Local\\JetBrains\\Toolbox\\apps\\AndroidStudio\\ch-0\\193.6626763\\bin\\studio64.exe",
-  "cordova": {}
+	"cordova": {}
 }

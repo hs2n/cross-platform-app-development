@@ -9,15 +9,49 @@
 <ion-content [fullscreen]="true">
 	<ion-header collapse="condense">
 		<ion-toolbar>
-			<ion-title size="large">Tab 2</ion-title>
+			<ion-title size="large">Tab 4</ion-title>
 		</ion-toolbar>
 	</ion-header>
-	<ion-list *ngFor="let item of data">
-		<ion-item>
-			<ion-label>
-				<h3>{{item.name}}</h3>
-				<p>{{item.info}}</p>
-			</ion-label>
-		</ion-item>
-	</ion-list>
+	<form #form="ngForm" [formGroup]="loginForm">
+		<ion-grid>
+			<ion-row justify-content-center>
+				<ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+					<div text-center>
+						<h3>Login!</h3>
+					</div>
+					<div paddi1>
+						<ion-item>
+							<ion-input name="name" type="text" formControlName="username" placeholder="Username"
+								required>
+							</ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-input name="password" type="password" formControlName="password" placeholder="Password"
+								required>
+							</ion-input>
+						</ion-item>
+					</div>
+					<div padding>
+						<ion-button size="large" type="submit" (click)="save()" [disabled]="loginForm.invalid"
+							color=success expand="block">Login</ion-button>
+					</div>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</form>
+	<ion-input [value]="data" readonly></ion-input>
+	<ion-header collapse="condense">
+		<ion-toolbar>
+			<ion-title size="large">Tab 4</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<ion-card>
+		<ion-card-header>
+			<ion-card-title>Or Log in with Google instead:</ion-card-title>
+		</ion-card-header>
+		<ion-card-content>
+			<ion-button color="success" expand="full" (click)="logInGoogle()">Log in with Google</ion-button>
+			<ion-button color="success" expand="full" (click)="logOutGoogle()">Log in with Google</ion-button>
+		</ion-card-content>
+	</ion-card>
 </ion-content>
