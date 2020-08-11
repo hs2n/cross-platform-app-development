@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_50mb_demo/dashboard.dart';
 import 'package:flutter_50mb_demo/inventory.dart';
@@ -11,6 +12,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'app_properties_bloc.dart';
 
 final _secureStorage = new FlutterSecureStorage();
+
+final _testUser = 'daniel';
+final _testToken = 'llahndksknfghadksklaa-nmsndhgziaibjdw-aannanmdihuaahfjsahl';
 
 void main() {
   runApp(MyApp());
@@ -115,16 +119,20 @@ class _DemoPageState extends State<DemoPage> with TickerProviderStateMixin {
     } else {
       print("Successfully verified credentials: $credentials");
 
-      appBloc.user = user;
-      appBloc.token = token;
-
-      setState(() {
-        _authenticated = true;
-      });
-      // Tab update listener is not called on first login
-      appBloc.updateTitle(_tabTitles[0]);
+      _authenticate(user, token);
       return true;
     }
+  }
+
+  void _authenticate(String user, String token) {
+    appBloc.user = user;
+    appBloc.token = token;
+
+    setState(() {
+      _authenticated = true;
+    });
+    // Tab update listener is not called when tab-view is opened the first time
+    appBloc.updateTitle(_tabTitles[0]);
   }
 
   void _logoutButtonPressed() async {
@@ -221,7 +229,7 @@ class _DemoPageState extends State<DemoPage> with TickerProviderStateMixin {
                   Container(
                     padding: EdgeInsets.only(left: 56, right: 56, top: 10),
                     child: Text(
-                      "Start by pressing the button below and authorizing yourself.",
+                      "Start by pressing the button below and authenticating yourself.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 18.0, fontWeight: FontWeight.w300),
@@ -248,6 +256,26 @@ class _DemoPageState extends State<DemoPage> with TickerProviderStateMixin {
                       onPressed: _scanQrCode,
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: RichText(
+                      text: TextSpan(
+                          style: TextStyle(color: Colors.black, fontSize: 12),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'If you do not have a code ',
+                            ),
+                            TextSpan(
+                              text: 'click here.',
+                              style: TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  _authenticate(_testUser, _testToken);
+                                },
+                            )
+                          ]),
+                    ),
+                  )
                 ],
               ),
             )

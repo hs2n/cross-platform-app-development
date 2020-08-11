@@ -5,6 +5,7 @@ import 'package:flutter_50mb_demo/app_properties_bloc.dart';
 
 import 'package:http/http.dart' as http;
 
+String urlHost = "https://www.reddit.com/";
 String baseUrl;
 
 class Dashboard extends StatefulWidget {
@@ -16,6 +17,7 @@ class DashboardState extends State<Dashboard> {
   String _after;
 
   bool _isLoading = true;
+  bool _isLoadError = false;
 
   /// Loads new posts from the url specified above
   /// if boolean previous is false, will automatically load posts after
@@ -23,33 +25,46 @@ class DashboardState extends State<Dashboard> {
     _isLoading = true;
     String url = baseUrl + (_after != null ? "?after=$_after" : "");
 
-    // TODO; This should throw an exception when no internet connection is available
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(response.body)['data'];
-      int itemCount = jsonData['dist'];
-      for (int i = 0; i < itemCount; i++) {
-        _postList.add(RedditPost.fromJson(jsonData['children'][i]['data']));
-      }
-      print("After is ${jsonData['after']}");
+    try {
       setState(() {
-        _after = jsonData['after'];
-        _isLoading = false;
+        _isLoading = true;
       });
-    } else {
-      // TODO: User message
-      print("Error while fetching data!");
+
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body)['data'];
+        int itemCount = jsonData['dist'];
+        for (int i = 0; i < itemCount; i++) {
+          _postList.add(RedditPost.fromJson(jsonData['children'][i]['data']));
+        }
+        print("After is ${jsonData['after']}");
+        setState(() {
+          _after = jsonData['after'];
+          _isLoadError = false;
+        });
+      } else {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text("Could not connect to reddit.com"),
+        ));
+        setState(() {
+          _isLoadError = true;
+        });
+      }
+    } catch (err) {
+      print("Caught an error while trying to connect: $err");
       setState(() {
-        _isLoading = false;
+        _isLoadError = true;
       });
     }
-    print("Not loading anymore!");
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   void initState() {
-    baseUrl =
-        "https://www.reddit.com/" + appBloc.fullSubredditName + "/hot.json";
+    baseUrl = urlHost + appBloc.fullSubredditName + "/hot.json";
     print("Changed baseUrl to $baseUrl");
 
     _loadPosts();
@@ -57,16 +72,33 @@ class DashboardState extends State<Dashboard> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (_isLoading) return CircularProgressIndicator();
 
+    if (_isLoadError) return _createErrorNoInternet();
+
     print("Amount of posts loaded: ${_postList.length}");
     return _createInifiniteScrollList();
+  }
+
+  Widget _createErrorNoInternet() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ListTile(
+            title: Text("Could not connect to host '$urlHost'."),
+            subtitle: Text(
+                "Try again later and make sure your device is connected to the internet."),
+          ),
+          FlatButton(
+            child: Text("Try again"),
+            onPressed: _loadPosts,
+            color: Theme.of(context).buttonColor,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _createInifiniteScrollList() {
